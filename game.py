@@ -14,13 +14,38 @@ move_map = {
     '9': [2, 2],
 }
 
+# play a swift round of one player tic tac toe
 if __name__ == '__main__':
+    # check a few boards
+    myBoard = board.Board()
+    assert (False == myBoard.make_move(0, 0, 'X'))
+    assert (False == myBoard.make_move(0, 1, 'X'))
+    assert (True == myBoard.make_move(0, 2, 'X'))
+
+    myBoard = board.Board()
+    assert (False == myBoard.make_move(0, 0, 'X'))
+    assert (False == myBoard.make_move(1, 0, 'X'))
+    assert (True == myBoard.make_move(2, 0, 'X'))
+
+    myBoard = board.Board()
+    assert (False == myBoard.make_move(0, 0, 'X'))
+    assert (False == myBoard.make_move(1, 1, 'X'))
+    assert (True == myBoard.make_move(2, 2, 'X'))
+
+    # will it block a win
+    myBoard = board.Board()
+    assert (False == myBoard.make_move(0, 0, 'X'))
+    assert (False == myBoard.make_move(1, 1, 'O'))
+    assert (False == myBoard.make_move(0, 1, 'X'))
+    player = players.MinMaxPlayer()
+    assert ((0,2,0) == player.make_move(myBoard, 1, False))
+
     print("Hello, Welcome to tic tac toe")
 
-    board = board.Board()
+    myBoard = board.Board()
     player = players.MinMaxPlayer()
-    board.print_help()
-    board.print()
+    myBoard.print_help()
+    myBoard.print()
     turn = ['X', 'O']
     turn_number = 0
 
@@ -35,7 +60,7 @@ if __name__ == '__main__':
         move = sys.stdin.read(1)[0]
 
         if move == '?':
-            board.print_help()
+            myBoard.print_help()
             continue
         if move == '\n':
             prompted_already = True
@@ -44,28 +69,29 @@ if __name__ == '__main__':
             print("Invalid move, try again. Please enter 1-9 for an empty square of '?' for help")
             continue
         row, col = move_map[move]
-        if not board.is_move_legal(row, col):
+        if not myBoard.is_move_legal(row, col):
             print("Invalid Move, position occupied, try again")
             continue
-        won = board.make_move(row, col, turn[turn_number])
+        won = myBoard.make_move(row, col, turn[turn_number])
         turn_number += 1
         turn_number %= 2
 
-        board.print()
+        # print out the board and see if it won
+        myBoard.print()
         if won:
             print("You won!")
             continue
-        if len(board.get_legal_moves()) == 0:
+        if len(myBoard.get_legal_moves()) == 0:
             print("You tied")
             won = True
 
         if not won:
             # let the other team try
-            result = player.make_move(board, play_max=True, play_x=False)
+            result = player.make_move(myBoard, play_max=True, play_x=False)
             if result[0] != None:
-                won = board.make_move(result[0], result[1], turn[turn_number])
+                won = myBoard.make_move(result[0], result[1], turn[turn_number])
                 turn_number += 1
                 turn_number %= 2
-                board.print()
+                myBoard.print()
             else:
-                print("No move made....ooopsie")
+                print("No move made....ooopsie. This should not happen.")

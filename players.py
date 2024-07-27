@@ -1,6 +1,8 @@
 import math
 
+# MinMax algorithm to play tic tac toe
 class MinMaxPlayer:
+    # make a move, specify if we are playing max or min side, and if we are X or O.
     def make_move(self, board, play_max=True, play_x=True):
         result = (None, None, -math.inf)
         if not play_max:
