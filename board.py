@@ -64,6 +64,7 @@ class Board:
         print('-'*5)
         print('7|8|9')
         print("enter the position number followed by enter")
+        print("")
 
     def _check_row(self, row, letter):
         if self._positions[row] == [letter, letter, letter]:
@@ -77,16 +78,12 @@ class Board:
         return True
 
     def _check_diagonal(self, letter):
-        # cannot have a diagonal without the middle
-        if self._positions[1][1] != letter:
-            return False
-
-        # check top left and lower right
-        if self._positions[0][0] == letter and self._positions[2][2] == letter:
+        # check top left to lower right
+        if self._positions[0][0] == letter and self._positions[1][1] == letter and self._positions[2][2] == letter:
             return True
 
-        # check top left and lower right
-        if self._positions[2][0] == letter and self._positions[0][2] == letter:
+        # check top left to lower right
+        if self._positions[2][0] == letter and self._positions[1][1] == letter and self._positions[0][2] == letter:
             return True
 
         return False
